@@ -202,18 +202,17 @@ void setup() {
   matrix.setPosition(0, 1, 0); // The second display is at <1, 0>
   matrix.fillScreen(LOW);
   fill_hourglass(8, HAUT);
-  next_grain = timer;
   startms = millis();
 }
 
 
 // Main loop :
 void loop() {
-  int htimeout = 800;
-  timer++;
-  //
-  if ((timer - next_grain) >= htimeout) {
-    next_grain = timer;
+  int htimeout = 1000;  
+  long now = millis();
+
+  if ((now - startms) >= htimeout) {
+    startms = now;
     drop();
   }
   // If we cannot manage to move 512 pixels, considering that the globe is empty.
@@ -222,3 +221,4 @@ void loop() {
     fill_hourglass(ln);
   }
 }
+

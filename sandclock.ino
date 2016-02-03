@@ -208,13 +208,14 @@ void setup() {
 
 // Main loop :
 void loop() {
+  // One second between each marble drop : 
   int htimeout = 1000;  
   long now = millis();
-
   if ((now - startms) >= htimeout) {
     startms = now;
     drop();
   }
+
   // If we cannot manage to move 512 pixels, considering that the globe is empty.
   if (animer(random(8), random(8) , random(2) ) > 512) {
     int ln = random(8);

@@ -1,15 +1,14 @@
-#include <SPI.h>
 #include <Adafruit_GFX.h>
 #include <Max72xxPanel.h>
 
 
 // Sandclock for Arduino
-// V1.0 -  february 2016
+// V1.1 -  february 2016
 // Blenderlab (http://www.blenderlab.fr / http://www.asthrolab.fr)
 // Fab4U (http://www.fab4U.de)
 
 
-// Hardware needed : 
+// Hardware needed :
 // Arduino (Uno,Mini,Micro...)
 // 2 Led Matrix with MAX7219 controller
 // Wires, powersupply ...;-D
@@ -18,12 +17,13 @@
 // Connect (chain) the second matrix to the first one : All same pins except (DOUT->DIN)
 // Taht's it !
 
-
 #define HAUT 0
 #define BAS 1
 #define ON 1
 #define OFF 0
 
+int wait = 20; // In milliseconds
+int ln = 5;
 
 // Matrix pinout
 // CS = 10
@@ -68,6 +68,14 @@ void fill_hourglass(int niv = 5, int globe = HAUT) {
   }
 }
 
+// cleanupp the lower glass slowly  :
+void empty_hourglass( int globe = BAS) {
+ for (int i=0;i<=128;i++){
+    set_pixel(random(8), random(8), globe, OFF);
+    draw_hourglass();
+    delay(10);
+  }
+}
 // Routine to print the led array on the matrix
 void draw_hourglass() {
   for (int i = 0; i < 8; i++) {
@@ -195,21 +203,22 @@ void drop()
 
 // Setu p :What elese ?
 void setup() {
-  Serial.begin(9600);
   randomSeed(analogRead(A0)); // Initialize random generator
   matrix.setIntensity(1); // Set brightness between 0 and 15
   matrix.setPosition(1, 0, 0); // The first display is at <0, 0>
   matrix.setPosition(0, 1, 0); // The second display is at <1, 0>
-  matrix.fillScreen(LOW);
-  fill_hourglass(8, HAUT);
+  matrix.setRotation(0, 3);
+  matrix.setRotation(1, 1); matrix.fillScreen(LOW);
+  ln = 5;
+  fill_hourglass(ln, HAUT);
   startms = millis();
 }
 
 
 // Main loop :
 void loop() {
-  // One second between each marble drop : 
-  int htimeout = 1000;  
+  // One second between each marble drop :
+  int htimeout = 1000;
   long now = millis();
   if ((now - startms) >= htimeout) {
     startms = now;
@@ -218,8 +227,8 @@ void loop() {
 
   // If we cannot manage to move 512 pixels, considering that the globe is empty.
   if (animer(random(8), random(8) , random(2) ) > 512) {
-    int ln = random(8);
-    fill_hourglass(ln);
+    empty_hourglass();
+    ln = random(8);    fill_hourglass(ln);
+
   }
 }
-

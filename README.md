@@ -2,7 +2,7 @@
 
 easy Hourglass for Arduino
 
-V1.0 -  february 2016
+V1.1 -  february 2016
 Blenderlab (http://www.blenderlab.fr / http://www.asthrolab.fr)
 Fab4U (http://www.fab4U.de)
 
@@ -13,6 +13,7 @@ Fab4U (http://www.fab4U.de)
 - Arduino (Uno,Mini,Micro...)
 - 2 Led Matrix with MAX7219 controller
 - Wires, powersupply ...;-D
+- Standing stuff is ready to print : http://www.thingiverse.com/thing:1316240
 
 # How To :
 - Connect the first matrix to the arduino (5 pins, as follow)
@@ -20,6 +21,5 @@ Fab4U (http://www.fab4U.de)
 - That's it !
 
 # Todo 
-- Manage an Upside/down movement (Shake captor)
-- Interface to select the duration
-- Fix the 'refill loop' (happens some times...)
+- Manage an Upside/down movement -> Reset (Shake captor)
+- Interface to select the duration (Touch button)

@@ -17,12 +17,15 @@
 // Connect (chain) the second matrix to the first one : All same pins except (DOUT->DIN)
 // Taht's it !
 
+
 #define HAUT 0
 #define BAS 1
 #define ON 1
 #define OFF 0
 
+String tape = "Arduino";
 int wait = 20; // In milliseconds
+
 int ln = 5;
 
 // Matrix pinout
@@ -32,6 +35,7 @@ int ln = 5;
 
 int pinCS = 10;
 Max72xxPanel matrix = Max72xxPanel(pinCS, 1, 2);
+
 
 // Timer for benchmarking
 unsigned long startms = millis();
@@ -70,8 +74,9 @@ void fill_hourglass(int niv = 5, int globe = HAUT) {
 
 // cleanupp the lower glass slowly  :
 void empty_hourglass( int globe = BAS) {
- for (int i=0;i<=128;i++){
+ for (int i=0;i<=256;i++){
     set_pixel(random(8), random(8), globe, OFF);
+    animer(random(8), random(8) ,1);
     draw_hourglass();
     delay(10);
   }
@@ -208,7 +213,8 @@ void setup() {
   matrix.setPosition(1, 0, 0); // The first display is at <0, 0>
   matrix.setPosition(0, 1, 0); // The second display is at <1, 0>
   matrix.setRotation(0, 3);
-  matrix.setRotation(1, 1); matrix.fillScreen(LOW);
+  matrix.setRotation(1, 1);
+  matrix.fillScreen(LOW);
   ln = 5;
   fill_hourglass(ln, HAUT);
   startms = millis();
@@ -228,7 +234,10 @@ void loop() {
   // If we cannot manage to move 512 pixels, considering that the globe is empty.
   if (animer(random(8), random(8) , random(2) ) > 512) {
     empty_hourglass();
-    ln = random(8);    fill_hourglass(ln);
+    ln = random(8)+1;  
+    fill_hourglass(ln);
+    startms = now;
+    drop();
 
   }
 }

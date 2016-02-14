@@ -3,7 +3,7 @@
 
 
 // Sandclock for Arduino
-// V1.1 -  february 2016
+// V1.2 -  february 2016
 // Blenderlab (http://www.blenderlab.fr / http://www.asthrolab.fr)
 // Fab4U (http://www.fab4U.de)
 
@@ -18,20 +18,24 @@
 // Taht's it !
 
 
+// Matrix pinout
+// CS = 10
+// CL = 13
+// DI = 11
+//
+// SW350D : 12 & GND (Vibration sensor) - (We use internal pullup)
+
 #define HAUT 0
 #define BAS 1
 #define ON 1
 #define OFF 0
+#define SHAKE 12
 
 String tape = "Arduino";
 int wait = 20; // In milliseconds
 
 int ln = 5;
 
-// Matrix pinout
-// CS = 10
-// CL = 13
-// DI = 11
 
 int pinCS = 10;
 Max72xxPanel matrix = Max72xxPanel(pinCS, 1, 2);
@@ -75,7 +79,7 @@ void fill_hourglass(int niv = 5, int globe = HAUT) {
 // cleanupp the lower glass slowly  :
 void empty_hourglass( int globe = BAS) {
  for (int i=0;i<=256;i++){
-    set_pixel(random(8), random(8), globe, OFF);
+    set_pixel(random(8), random(8), random(2), OFF);
     animer(random(8), random(8) ,1);
     draw_hourglass();
     delay(10);
@@ -209,7 +213,10 @@ void drop()
 // Setu p :What elese ?
 void setup() {
   randomSeed(analogRead(A0)); // Initialize random generator
-  matrix.setIntensity(1); // Set brightness between 0 and 15
+  pinMode(12,INPUT); // SW350D Pinout
+  digitalWrite(12,HIGH); // Turnon Internal Pullup
+  
+  matrix.setIntensity(0); // Set brightness between 0 and 15
   matrix.setPosition(1, 0, 0); // The first display is at <0, 0>
   matrix.setPosition(0, 1, 0); // The second display is at <1, 0>
   matrix.setRotation(0, 3);
@@ -230,7 +237,13 @@ void loop() {
     startms = now;
     drop();
   }
-
+  if (digitalRead(12)==HIGH){ // If vibration recorded : reset !
+    empty_hourglass();
+    ln = random(8)+1;  
+    fill_hourglass(ln);
+    startms = now;
+    drop();
+  }
   // If we cannot manage to move 512 pixels, considering that the globe is empty.
   if (animer(random(8), random(8) , random(2) ) > 512) {
     empty_hourglass();

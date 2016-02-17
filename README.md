@@ -2,17 +2,19 @@
 
 easy Hourglass for Arduino
 
-V1.1 -  february 2016
+V1.2 -  february 2016
 Blenderlab (http://www.blenderlab.fr / http://www.asthrolab.fr)
 Fab4U (http://www.fab4U.de)
 
 - Randomly choose the amout of sand to fill the upperglass
 - Drops one marble every second
+- Can be shaked to reset counter
 
 # Hardware needed : 
 - Arduino (Uno,Mini,Micro...)
 - 2 Led Matrix with MAX7219 controller
 - Wires, powersupply ...;-D
+- SW350D or any digital vibration sensor (SW320D ...)
 - Standing stuff is ready to print : http://www.thingiverse.com/thing:1316240
 
 # How To :
@@ -21,5 +23,4 @@ Fab4U (http://www.fab4U.de)
 - That's it !
 
 # Todo 
-- Manage an Upside/down movement -> Reset (Shake captor)
 - Interface to select the duration (Touch button)
